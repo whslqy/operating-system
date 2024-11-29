@@ -2,30 +2,60 @@
 #include <stdio.h>
 
 int main() {
-    // 测试内存分配
-    void* block1 = _malloc(128);
-    if (block1) {
-        printf("Block 1 allocated: 128 bytes\n");
+    // 申请一个 int 数组并赋值
+    printf("申请一个 int 数组，其元素如下：\n");
+    int* p = (int*)_malloc(10 * sizeof(int));
+    for (int i = 0; i < 10; i++) {
+        p[i] = i;
     }
 
-    void* block2 = _malloc(256);
-    if (block2) {
-        printf("Block 2 allocated: 256 bytes\n");
+    // 打印 int 数组的内容
+    for (int i = 0; i < 10; i++) {
+        printf("p[%d] = %d\n", i, p[i]);
     }
 
-    // 释放内存
-    _free(block1);
-    printf("Block 1 freed.\n");
+    // 打印内存状态
+    printf("\n内存块状态：\n");
+    memory_status();
 
-    // 再次分配
-    void* block3 = _malloc(64);
-    if (block3) {
-        printf("Block 3 allocated: 64 bytes\n");
+    // 申请一个 char 数组并赋值
+    printf("\n申请一个 char 数组，赋值如下：\n");
+    char* str = (char*)_malloc(12 * sizeof(char));  // "hello world" 字符串 + '\0'
+    snprintf(str, 12, "hello world");  // 赋值为 "hello world"
+
+    // 打印 char 数组的内容
+    printf("str = %s\n", str);
+
+    // 打印内存状态
+    printf("\n内存块状态：\n");
+    memory_status();
+
+    // 释放前面的空间
+    printf("\n释放前面的空间\n");
+    _free(p);  // 释放 int 数组
+    _free(str); // 释放 char 数组
+
+    // 打印内存状态
+    printf("\n内存块状态：\n");
+    memory_status();
+
+    // 重新申请一个 int 数组并赋值
+    printf("\n申请一个 int 数组，其元素如下：\n");
+    p = (int*)_malloc(10 * sizeof(int));
+    for (int i = 0; i < 10; i++) {
+        p[i] = i;
     }
 
-    _free(block2);
-    _free(block3);
+    // 打印 int 数组的内容
+    for (int i = 0; i < 10; i++) {
+        printf("p[%d] = %d\n", i, p[i]);
+    }
 
-    printf("All blocks freed.\n");
+    // 打印内存状态
+    printf("\n内存块状态：\n");
+    memory_status();
+
+    printf("\nOK\n");
+
     return 0;
 }
